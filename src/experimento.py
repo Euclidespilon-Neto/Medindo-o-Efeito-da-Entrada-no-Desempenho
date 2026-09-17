@@ -7,7 +7,7 @@ import bst
 import avl
 
 
-TAMANHOS = [4000, 8000, 16000, 32000]
+TAMANHOS = [2000, 4000, 8000, 16000, 32000]
 
 
 PASTA_PROJETO = Path(__file__).resolve().parent.parent
