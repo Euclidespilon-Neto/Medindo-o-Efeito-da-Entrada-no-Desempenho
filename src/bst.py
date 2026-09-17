@@ -6,18 +6,26 @@ class No:
 
 
 def inserir(raiz, chave):
-    """
-    Insere uma chave na BST.
-    Não permite duplicatas.
-    """
     if raiz is None:
         return No(chave)
 
-    if chave < raiz.chave:
-        raiz.esq = inserir(raiz.esq, chave)
+    atual = raiz
 
-    elif chave > raiz.chave:
-        raiz.dir = inserir(raiz.dir, chave)
+    while True:
+        if chave < atual.chave:
+            if atual.esq is None:
+                atual.esq = No(chave)
+                break
+            atual = atual.esq
+
+        elif chave > atual.chave:
+            if atual.dir is None:
+                atual.dir = No(chave)
+                break
+            atual = atual.dir
+
+        else:
+            break
 
     return raiz
 
@@ -41,16 +49,25 @@ def buscar(raiz, chave):
 
 
 def altura(raiz):
-    """
-    Calcula a altura da árvore.
-    """
     if raiz is None:
         return 0
 
-    return 1 + max(
-        altura(raiz.esq),
-        altura(raiz.dir)
-    )
+    fila = [(raiz, 1)]
+    maior_altura = 0
+
+    while fila:
+        no, nivel = fila.pop()
+
+        if nivel > maior_altura:
+            maior_altura = nivel
+
+        if no.esq is not None:
+            fila.append((no.esq, nivel + 1))
+
+        if no.dir is not None:
+            fila.append((no.dir, nivel + 1))
+
+    return maior_altura
 
 
 def em_ordem(raiz, saida=None):

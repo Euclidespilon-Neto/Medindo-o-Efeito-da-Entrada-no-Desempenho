@@ -7,7 +7,14 @@ import bst
 import avl
 
 
-TAMANHOS = [100, 300, 600, 900]
+TAMANHOS = [4000, 8000, 16000, 32000]
+
+
+PASTA_PROJETO = Path(__file__).resolve().parent.parent
+PASTA_DADOS = PASTA_PROJETO / "dados"
+PASTA_DADOS.mkdir(exist_ok=True)
+
+ARQUIVO_RESULTADOS = PASTA_DADOS / "resultados.csv"
 
 
 def construir_bst(valores):
@@ -47,74 +54,7 @@ def medir_buscas(modulo, raiz, valores):
     return fim - inicio
 
 
-resultados = []
-
-
-for n in TAMANHOS:
-
-    # -----------------------------
-    # ENTRADA ORDENADA
-    # -----------------------------
-
-    valores = list(range(n))
-
-    raiz_bst, tempo_bst = construir_bst(valores)
-    raiz_avl, tempo_avl = construir_avl(valores)
-
-    resultados.append([
-        "BST",
-        "ordenada",
-        n,
-        bst.altura(raiz_bst),
-        tempo_bst,
-        medir_buscas(bst, raiz_bst, valores)
-    ])
-
-    resultados.append([
-        "AVL",
-        "ordenada",
-        n,
-        avl.altura(raiz_avl),
-        tempo_avl,
-        medir_buscas(avl, raiz_avl, valores)
-    ])
-
-
-    
-    # -------------------------- ENTRADA ALEATÓRIA --------------------------
-    
-
-    valores = list(range(n))
-    random.shuffle(valores)
-
-    raiz_bst, tempo_bst = construir_bst(valores)
-    raiz_avl, tempo_avl = construir_avl(valores)
-
-    resultados.append([
-        "BST",
-        "aleatoria",
-        n,
-        bst.altura(raiz_bst),
-        tempo_bst,
-        medir_buscas(bst, raiz_bst, valores)
-    ])
-
-    resultados.append([
-        "AVL",
-        "aleatoria",
-        n,
-        avl.altura(raiz_avl),
-        tempo_avl,
-        medir_buscas(avl, raiz_avl, valores)
-    ])
-
-PASTA_PROJETO = Path(__file__).resolve().parent.parent
-PASTA_DADOS = PASTA_PROJETO / "dados"
-
-PASTA_DADOS.mkdir(exist_ok=True)
-
-ARQUIVO_RESULTADOS = PASTA_DADOS / "resultados.csv"
-
+# Cria o arquivo e escreve o cabeçalho
 with open(
     ARQUIVO_RESULTADOS,
     "w",
@@ -133,4 +73,110 @@ with open(
         "tempo_buscas"
     ])
 
-    escritor.writerows(resultados)
+
+# Executa os testes
+for n in TAMANHOS:
+
+    print(f"\n======================")
+    print(f"Testando n = {n}")
+    print(f"======================")
+
+    # -------------------------
+    # ENTRADA ORDENADA
+    # -------------------------
+
+    valores = list(range(n))
+
+    print("BST ordenada...")
+    raiz_bst, tempo_bst = construir_bst(valores)
+
+    print("AVL ordenada...")
+    raiz_avl, tempo_avl = construir_avl(valores)
+
+    resultado_bst = [
+        "BST",
+        "ordenada",
+        n,
+        bst.altura(raiz_bst),
+        tempo_bst,
+        medir_buscas(bst, raiz_bst, valores)
+    ]
+
+    resultado_avl = [
+        "AVL",
+        "ordenada",
+        n,
+        avl.altura(raiz_avl),
+        tempo_avl,
+        medir_buscas(avl, raiz_avl, valores)
+    ]
+
+
+    # grava imediatamente
+    with open(
+        ARQUIVO_RESULTADOS,
+        "a",
+        newline="",
+        encoding="utf-8"
+    ) as arquivo:
+
+        escritor = csv.writer(arquivo)
+
+        escritor.writerow(resultado_bst)
+        escritor.writerow(resultado_avl)
+
+
+    print("Resultados ordenados salvos.")
+
+
+    # -------------------------
+    # ENTRADA ALEATÓRIA
+    # -------------------------
+
+    valores = list(range(n))
+    random.shuffle(valores)
+
+    print("BST aleatória...")
+    raiz_bst, tempo_bst = construir_bst(valores)
+
+    print("AVL aleatória...")
+    raiz_avl, tempo_avl = construir_avl(valores)
+
+    resultado_bst = [
+        "BST",
+        "aleatoria",
+        n,
+        bst.altura(raiz_bst),
+        tempo_bst,
+        medir_buscas(bst, raiz_bst, valores)
+    ]
+
+    resultado_avl = [
+        "AVL",
+        "aleatoria",
+        n,
+        avl.altura(raiz_avl),
+        tempo_avl,
+        medir_buscas(avl, raiz_avl, valores)
+    ]
+
+
+    with open(
+        ARQUIVO_RESULTADOS,
+        "a",
+        newline="",
+        encoding="utf-8"
+    ) as arquivo:
+
+        escritor = csv.writer(arquivo)
+
+        escritor.writerow(resultado_bst)
+        escritor.writerow(resultado_avl)
+
+
+    print("Resultados aleatórios salvos.")
+
+
+print("\nExperimento concluído.")
+print(f"Arquivo salvo em:")
+print(ARQUIVO_RESULTADOS)
