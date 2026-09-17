@@ -6,6 +6,10 @@ class No:
 
 
 def inserir(raiz, chave):
+    """
+    Insere uma chave na BST.
+    Não permite duplicatas.
+    """
     if raiz is None:
         return No(chave)
 
@@ -19,6 +23,9 @@ def inserir(raiz, chave):
 
 
 def buscar(raiz, chave):
+    """
+    Retorna True se a chave existir.
+    """
     no = raiz
 
     while no:
@@ -34,6 +41,9 @@ def buscar(raiz, chave):
 
 
 def altura(raiz):
+    """
+    Calcula a altura da árvore.
+    """
     if raiz is None:
         return 0
 
@@ -41,3 +51,17 @@ def altura(raiz):
         altura(raiz.esq),
         altura(raiz.dir)
     )
+
+
+def em_ordem(raiz, saida=None):
+    """
+    Retorna as chaves em ordem crescente.
+    """
+    saida = [] if saida is None else saida
+
+    if raiz:
+        em_ordem(raiz.esq, saida)
+        saida.append(raiz.chave)
+        em_ordem(raiz.dir, saida)
+
+    return saida
