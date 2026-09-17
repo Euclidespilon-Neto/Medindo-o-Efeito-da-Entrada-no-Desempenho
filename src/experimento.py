@@ -1,4 +1,5 @@
 import random
+from pathlib import Path
 import time
 import csv
 
@@ -79,9 +80,9 @@ for n in TAMANHOS:
     ])
 
 
-    # -----------------------------
-    # ENTRADA ALEATÓRIA
-    # -----------------------------
+    
+    # -------------------------- ENTRADA ALEATÓRIA --------------------------
+    
 
     valores = list(range(n))
     random.shuffle(valores)
@@ -107,9 +108,15 @@ for n in TAMANHOS:
         medir_buscas(avl, raiz_avl, valores)
     ])
 
+PASTA_PROJETO = Path(__file__).resolve().parent.parent
+PASTA_DADOS = PASTA_PROJETO / "dados"
+
+PASTA_DADOS.mkdir(exist_ok=True)
+
+ARQUIVO_RESULTADOS = PASTA_DADOS / "resultados.csv"
 
 with open(
-    "../dados/resultados.csv",
+    ARQUIVO_RESULTADOS,
     "w",
     newline="",
     encoding="utf-8"
@@ -127,7 +134,3 @@ with open(
     ])
 
     escritor.writerows(resultados)
-
-
-print("Experimento concluído.")
-print("Resultados salvos em dados/resultados.csv")
