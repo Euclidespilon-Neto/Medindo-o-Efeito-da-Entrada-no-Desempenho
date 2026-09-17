@@ -6,9 +6,8 @@ Alunos: Euclides &amp; Gabriela
 
 ## Integrantes
 
-- Nome do integrante 1
-- Nome do integrante 2
-- Nome do integrante 3
+- Gabriela de Araújo Reis
+- Euclides Carlos Pilon Neto
 
 ## O que investigamos
 
